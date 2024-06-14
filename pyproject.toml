@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Quick-Fetch"
+dynamic = ["version"]
+dependencies = [
+    "chime==0.7.0",
+    "colorama==0.4.6",
+    "inquirer==3.2.4",
+    "keyboard==0.13.5",
+    "PyAutoGUI==0.9.54",
+    "pyperclip==1.8.2",
+    "PyScreeze==0.1.30",
+    "pywinauto==0.6.8",
+    "rich==13.7.1",
+    "selenium==4.21.0"
+]
+
+requires-python = ">=3.12"
+authors = [
+    {name = "Thomas Roosdorp", email = "github@roosdorp.se"}
+]
+maintainers = [
+    {name = "Thomas Roosdorp", email = "github@roosdorp.se"}
+]
+description = "Helps download individual images or files using hotkeys."
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = ["downloader", "quick", "hotkeys", "download images"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Natural Language :: English",
+    "Operating System :: Microsoft :: Windows"
+]
+
+[project.urls]
+Homepage = "https://github.com/Phiido/quick-fetch"
+Issues = "https://github.com/Phiido/quick-fetch/issues"
+
+[project.scripts]
+QuickFetch = "quick-fetch.__main__:app"
+
+[tool.setuptools.dynamic]
+version = {attr = "quick-fetch.__version__"}
