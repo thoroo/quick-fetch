@@ -19,6 +19,8 @@ def download_wait(directory, timeout=120, nfiles=None):
             If provided, also wait for the expected number of files.
 
     """
+    from .main import USE_SOUND
+
     seconds = 0
     waiting = True
     messaged = False
@@ -29,7 +31,10 @@ def download_wait(directory, timeout=120, nfiles=None):
 
         if seconds == timeout:
             logger.error(f'Checking for downloaded file has timed out after {timeout} seconds..')
-            chime.error()
+
+            if USE_SOUND:
+                chime.error()
+                
             clean_exit()
 
         waiting = False

@@ -39,14 +39,15 @@ def grab_url_from_mouse(button):
     return url
 
 def save_file_from_url(url):
-    from .main import PATH_OUTPUT
+    from .main import PATH_OUTPUT, USE_SOUND
 
     file_name = os.path.basename(urlparse(url).path)
     file_path = f'{PATH_OUTPUT}\\{file_name}'
     
     if os.path.exists(file_path):
         logger.warning(f'{file_name} already exists at {PATH_OUTPUT}. {Fore.YELLOW}Skipping!{Fore.WHITE}')
-        chime.warning()
+        if USE_SOUND:
+            chime.warning()
         return
 
     with requests.get(url, stream=True, timeout=10) as response:
@@ -56,7 +57,8 @@ def save_file_from_url(url):
         del response
 
     logger.info(f'{Fore.GREEN}File was successfully downloaded!{Fore.WHITE}')
-    chime.success()
+    if USE_SOUND:
+        chime.success()
 
 def grab_directly():
     """Interacts directly over the Chrome window and uses simple mouse and keyboard presses to grab the file/image"""

@@ -75,7 +75,7 @@ The config is divided into the following sections:
 - Unzip: Whether to unzip downloaded zip-files; Defaults to False
 - Prefix: Adds string as prefix to filename; Defaults to none
 - Suffix: Adds string as suffix to filename; Defaults to none
-- ThemeSound: Choosing theme based on [chime](https://github.com/MaxHalford/chime), or None to disable it. Defaults to 'big-sur'
+- ThemeSound: Choosing theme based on [chime](https://github.com/MaxHalford/chime), or 'None' to disable it; Defaults to 'big-sur'
 
 ### Hotkeys
 

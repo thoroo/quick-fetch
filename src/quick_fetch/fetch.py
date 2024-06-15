@@ -26,12 +26,16 @@ def go_fetch(mode):
         fetch_indirectly()
 
 def fetch_directly():
+    from .main import USE_SOUND
+
     logger.debug('Fetching file indirectly..')
     logger.error(f'{Fore.YELLOW}Fetching file indirectly is currently not implemented!{Fore.WHITE}')
-    chime.error()
+
+    if USE_SOUND:
+        chime.error()
 
 def fetch_indirectly():    
-    from .main import DRIVER, CONFIG, PATH_OUTPUT, PATH_TEMP
+    from .main import DRIVER, CONFIG, PATH_OUTPUT, PATH_TEMP, USE_SOUND
     
     logger.debug('Fetching file directly..')
 
@@ -77,7 +81,8 @@ def fetch_indirectly():
 
     if len(glob(os.path.join(PATH_OUTPUT, string_meta + ext))) > 0:
         logger.warning(f'Target file already exists in output folder! {Fore.RED}Skipping!{Fore.WHITE}')
-        chime.warning()
+        if USE_SOUND:
+            chime.warning()
         return
 
     url_next = DRIVER.find_element(By.XPATH, XPATH_NEXT_URL).get_attribute('href')
@@ -90,7 +95,8 @@ def fetch_indirectly():
 
     if len(os.listdir(PATH_TEMP.name)) == 0:
         logger.error(f'Download was not able to start! Most likely a "404 Not Found". {Fore.YELLOW}Skipping!{Fore.WHITE}')
-        chime.error()
+        if USE_SOUND:
+            chime.error()
         return
 
     file_in = Path(PATH_TEMP.name, os.listdir(PATH_TEMP.name)[0])
@@ -122,4 +128,6 @@ def fetch_indirectly():
             shutil.rmtree(object, ignore_errors=True, onexc=logger.error(f'Unable to delete folder: "{object}"'))
 
     logger.info(f'{Fore.GREEN}And file has been unzipped!{Fore.WHITE}')
-    chime.success()
+
+    if USE_SOUND:
+        chime.success()

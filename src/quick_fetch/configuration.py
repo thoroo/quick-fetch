@@ -1,11 +1,11 @@
-from configparser import ConfigParser
 import os
-from ast import literal_eval
-from pathlib import Path
 import shutil
 import glob
 import chime
 import inquirer
+from configparser import ConfigParser
+from ast import literal_eval
+from pathlib import Path
 from quick_fetch import logger
 from .config.exceptions import ConfigError
 from .config import constants as c
@@ -41,7 +41,6 @@ def load_config():
 
     elif  n_config < 0:
         logger.error('Missing config files! Recreating default config..')
-        chime.error()
         QuickFetchConfig()._recreate_default_file()
         n_config = 1
 
@@ -84,7 +83,7 @@ class QuickFetchConfig(ConfigParser):
     def read_general(self, key):
         """Get values for keys present in the General section of the config"""
         value = self[c.SECTION_GENERAL][key]
-        
+
         # ensures that booleans are read as such and not as strings
         list = ['False', 'True']
         if any(element in value for element in list):

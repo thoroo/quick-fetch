@@ -22,6 +22,7 @@ def run():
     global PATH_OUTPUT
     global PATH_TEMP
     global DRIVER
+    global USE_SOUND
 
     CONFIG = load_config()
     MODE = CONFIG.read_general(c.KEY_MODE)
@@ -50,19 +51,23 @@ def run():
     # TODO add disable sound to config
     # TODO log to file
 
-    if sound_theme in chime.themes():
-        chime.theme(sound_theme)
+    if sound_theme.lower() != 'none':
+        USE_SOUND = True
+        try:
+            chime.theme(sound_theme)
+        except:
+            logger.warning(f'Unable to read {c.KEY_SOUND}. Defaulting to "big-sur".')
+            chime.theme('big-sur')
+            chime.warning()
     else:
-        chime.theme("big-sur")
-        logger.warning('Unable to read "ThemeSound". Defaulting to "big-sur".')
-        chime.warning()
+        USE_SOUND = False
+        logger.info('Sound has been disabled in config.')
 
     while True:
         time.sleep(0.5)
         logger.info("Awaiting input..") # TODO Fix that it is only shown once
         keyboard.wait()
         time.sleep(0.5)
-
 
 if __name__ == "__main__":
     run()
