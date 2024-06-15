@@ -68,18 +68,19 @@ def fetch_indirectly():
         return
     
     string_meta = f'{string1} ({string2})'
+    reserved_chars = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
+    string_meta = string_meta.translate({ord(char): '' for char in reserved_chars})
 
     logger.info(f'Found the following metadata: {Fore.YELLOW}"{string_meta}"{Fore.WHITE}')
             
-    string_meta = build_filename(string1, string2)
-    string_meta = string_meta.replace('/', '-')
+    file_name = build_filename(string_meta)
 
     if UNZIP:
-        ext = '.*'
-    else:
         ext = ''
+    else:
+        ext = '.*'
 
-    if len(glob(os.path.join(PATH_OUTPUT, string_meta + ext))) > 0:
+    if len(glob(os.path.join(PATH_OUTPUT, file_name + ext))) > 0:
         logger.warning(f'Target file already exists in output folder! {Fore.RED}Skipping!{Fore.WHITE}')
         if USE_SOUND:
             chime.warning()
@@ -87,7 +88,6 @@ def fetch_indirectly():
 
     url_next = DRIVER.find_element(By.XPATH, XPATH_NEXT_URL).get_attribute('href')
 
-    logger.info(f'Moving to: {Fore.BLUE}{url_next}{Fore.WHITE}')
     DRIVER.get(url_next)
                     
     WebDriverWait(DRIVER, 20).until(EC.element_to_be_clickable((By.XPATH, XPATH_DOWNLOAD))).click()
@@ -100,7 +100,7 @@ def fetch_indirectly():
         return
 
     file_in = Path(PATH_TEMP.name, os.listdir(PATH_TEMP.name)[0])
-    file_out = file_in.parent/(string_meta + file_in.suffix)
+    file_out = file_in.parent/(file_name + file_in.suffix)
     file_in.rename(file_out)
 
     path_source_dir = os.path.join(PATH_TEMP.name, file_out.stem)
@@ -125,7 +125,10 @@ def fetch_indirectly():
         if os.path.isfile(object):
             os.remove(object)
         else:
-            shutil.rmtree(object, ignore_errors=True, onexc=logger.error(f'Unable to delete folder: "{object}"'))
+            try:
+                shutil.rmtree(object, ignore_errors=True)
+            except:
+                logger.error(f'Unable to delete folder: "{object}"')
 
     logger.info(f'{Fore.GREEN}And file has been unzipped!{Fore.WHITE}')
 

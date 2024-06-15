@@ -13,11 +13,11 @@ def file_exists(dir, str):
             return False
 
 
-def build_filename(string1, string2):
+def build_filename(str):
     from .main import CONFIG
 
     prefix = CONFIG.read_general(c.KEY_PREFIX)
     suffix = CONFIG.read_general(c.KEY_SUFFIX)
 
-    filename = prefix + string1 + ' (' + string2 + ')' + suffix
+    filename = prefix + str + suffix
     return filename
