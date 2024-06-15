@@ -12,7 +12,7 @@ QuickFetch is a semi-automatic tool that requires user input and is meant to be 
 - Downloads a file in which one must click on a link to get to page with download link (e.g. selecting from a grid of items)
 - Can grab metadata (currently only two strings/elements) to use for file naming
 - Can unzip files after download
-- Can handle buttons on page that requires user input in order to show content on page
+- Can handle buttons on page that requires user input in order to show content on page, i.e. gatekeeping buttons such as age restrictions
 - Quick button to move to previous or next page (works by Pyscreeze locating image of button on screen)
 - Config selection to setup different settings for different pages
 - Adding suffix or prefix to downloaded files
@@ -30,6 +30,7 @@ QuickFetch is a semi-automatic tool that requires user input and is meant to be 
 - Add example config for showcasing XPaths
 - Add functionality in user other drivers, e.g. IE and Firefox
 - Add combined functionality between `grab` and `fetch`
+- Add logging to file if that is of interest
 
 ## Installation
 
@@ -48,7 +49,7 @@ If you want to use page navigator buttons, create a copy of the button image(s) 
 
 Setting up XPaths are required, though not all of them depending on usage.
 
-Finding XPaths for an element can be done by going into DevTools (pressing F12), right clicking on the target element and copy the XPath string. A good tutorial can be found at [W3schools](https://www.w3schools.com/xml/xpath_intro.asp) for more advanced search methods. Double check that the XPath is correct by doing a search (CTRL + F) inside the elements tab of DevTools. You should only get a single hit, if it is 0 or >1, rewrite it.
+Finding XPaths for an element can be done by going into DevTools (pressing F12 for Chrome), right clicking on the target element and copy the XPath string. A good tutorial can be found at [W3schools](https://www.w3schools.com/xml/xpath_intro.asp) for more advanced search methods. Double check that the XPath is correct by doing a search (CTRL + F) inside the elements tab of DevTools. You should only get a single hit, if it is 0 or >1, rewrite it.
 
 ## Usage
 
@@ -56,12 +57,14 @@ Finding XPaths for an element can be done by going into DevTools (pressing F12),
 python3 -m quick-fetch
 ```
 
-- Choosing the mode of operation:
+- Setting the mode of operation in config: 
 
     - **Mouse:** Grabs the URL from where the mouse pointer is located. Useful for dealing with images
     - **XPaths:** Moves into either next URL or download link based on configured XPaths. Useful when dealing with files (e.g. zip-files)
 
 - Choosing which config from those that are available in './config_files/.
+
+**Note:** There is some validation of button clicks and copied URLs when using `Mouse mode`, however, Chrome has implemented quick access to *Reading Mode* that will be opened instead when pressing the hotkey for `Direct download` when over a non-link element. A workaround is to disable *Reading Mode* from Chrome flags (<chrome://flags/>).
 
 ## Config settings
 
