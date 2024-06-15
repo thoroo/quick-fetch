@@ -25,7 +25,7 @@ def run():
     global USE_SOUND
 
     CONFIG = load_config()
-    MODE = CONFIG.read_general(c.KEY_MODE)
+    MODE = CONFIG.read_general(c.KEY_MODE).lower()
     register_hotkeys()
 
     PATH_TEMP = TemporaryDirectory()
@@ -41,8 +41,8 @@ def run():
     else:
         PATH_OUTPUT = path_output
 
-    logger.info(f"Output path set to: '{PATH_OUTPUT}'")
-    logger.info(f"Using mode: {Fore.GREEN}{MODE}{Fore.WHITE}")
+    logger.info(f"Output path set to: {Fore.GREEN}{PATH_OUTPUT}{Fore.WHITE}")
+    logger.info(f"Using mode: {Fore.GREEN}{MODE.title()}{Fore.WHITE}")
 
     atexit.register(clean_exit)
 

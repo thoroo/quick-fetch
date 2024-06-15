@@ -9,15 +9,14 @@ from .exit_handler import clean_exit
     
 def register_hotkeys():
     """Register hotkeys based on values present in the selected config"""
-    
     from .main import CONFIG, MODE
+
     hotkeys = CONFIG.get_hotkeys()
-
-    if MODE.lower == 'mouse':
+    if MODE == 'mouse':
         download_function = grab_from_mouse
-    elif MODE.lower == 'xpath':
+    elif MODE == 'xpath':
         download_function = go_fetch
-
+    
     # TODO if any hotkey is empty then return null function
 
     add_hotkey(hotkeys.get(c.KEY_EXIT.lower()),
