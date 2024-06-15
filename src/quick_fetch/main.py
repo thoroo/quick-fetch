@@ -48,7 +48,6 @@ def run():
 
     sound_theme = CONFIG.read_general(c.KEY_SOUND)
 
-    # TODO add disable sound to config
     # TODO log to file
 
     if sound_theme.lower() != 'none':
