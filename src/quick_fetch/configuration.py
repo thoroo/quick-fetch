@@ -84,6 +84,8 @@ class QuickFetchConfig(ConfigParser):
     def read_general(self, key):
         """Get values for keys present in the General section of the config"""
         value = self[c.SECTION_GENERAL][key]
+        
+        # ensures that booleans are read as such and not as strings
         list = ['False', 'True']
         if any(element in value for element in list):
             value = literal_eval(value)    

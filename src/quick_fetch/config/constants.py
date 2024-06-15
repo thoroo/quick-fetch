@@ -3,9 +3,10 @@ _CONFIG_DIR = 'config_files'
 _INTERNAL_CONFIG_FILE = "default.ini"
 
 SECTION_GENERAL = 'General'
+KEY_MODE = 'Mode'
+KEY_UNZIP = 'Unzip'
 KEY_PREFIX = 'Prefix'
 KEY_SUFFIX = 'Suffix'
-KEY_UNZIP = 'Unzip'
 KEY_SOUND = 'ThemeSound'
 KEY_LOG_LEVEL = 'LogLevel'
 

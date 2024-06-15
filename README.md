@@ -28,6 +28,8 @@ QuickFetch is a semi-automatic tool that requires user input and is meant to be 
 - Maybe implement some sort of asynch functionality to be able to press for next item instead of waiting.
     - Temp folder needs to be reworked in that case
 - Add example config for showcasing XPaths
+- Add functionality in user other drivers, e.g. IE and Firefox
+- Add combined functionality between `grab` and `fetch`
 
 ## Installation
 
@@ -36,7 +38,7 @@ pip install git+https://github.com/Phiido/quick-fetch
 ```
 
 - Note that QuickFetch **requires** '>= Python 3.8.0'
-- Can **only** run on Chrome and its driver
+- Can currently **only** run on Chrome and its driver
 
 Default config file can be found in project folder './config_files/'. For custom settings, make a copy of
 the config file and rename it (for example hostname of the page), adjust settings for your needs. See below 
@@ -56,7 +58,7 @@ python3 -m quick-fetch
 
 - Choosing the mode of operation:
 
-    - **Mouse pointer:** Grabs the URL from where the mouse pointer is located. Useful for dealing with images
+    - **Mouse:** Grabs the URL from where the mouse pointer is located. Useful for dealing with images
     - **XPaths:** Moves into either next URL or download link based on configured XPaths. Useful when dealing with files (e.g. zip-files)
 
 - Choosing which config from those that are available in './config_files/.
@@ -69,9 +71,10 @@ The config is divided into the following sections:
 
 ### General
 
+- Mode: Which mode to use when fetching (possible values are 'Mouse' and 'XPath'); Defaults to 'Mouse'
+- Unzip: Whether to unzip downloaded zip-files; Defaults to False
 - Prefix: Adds string as prefix to filename; Defaults to none
 - Suffix: Adds string as suffix to filename; Defaults to none
-- Unzip: Whether to unzip downloaded zip-files; Defaults to False
 - ThemeSound: Choosing theme based on [chime](https://github.com/MaxHalford/chime), or None to disable it. Defaults to 'big-sur'
 
 ### Hotkeys

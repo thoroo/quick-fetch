@@ -5,10 +5,10 @@ import logging
 import atexit
 import keyboard
 import chime
+from colorama import Fore
 from quick_fetch import logger
 from .config import constants as c
 from .configuration import load_config
-from .mode import pick_mode
 from .hotkeys import register_hotkeys
 from .driver import create_driver
 from .exit_handler import clean_exit
@@ -23,9 +23,8 @@ def run():
     global PATH_TEMP
     global DRIVER
 
-    # TODO read mode from config instead
-    MODE = pick_mode()
     CONFIG = load_config()
+    MODE = CONFIG.read_general(c.KEY_MODE)
     register_hotkeys()
 
     PATH_TEMP = TemporaryDirectory()
@@ -42,6 +41,7 @@ def run():
         PATH_OUTPUT = path_output
 
     logger.info(f"Output path set to: '{PATH_OUTPUT}'")
+    logger.info(f"Using mode: {Fore.GREEN}{MODE}{Fore.WHITE}")
 
     atexit.register(clean_exit)
 
@@ -59,7 +59,7 @@ def run():
 
     while True:
         time.sleep(0.5)
-        logger.info("Awaiting input..")
+        logger.info("Awaiting input..") # TODO Fix that it is only shown once
         keyboard.wait()
         time.sleep(0.5)
 

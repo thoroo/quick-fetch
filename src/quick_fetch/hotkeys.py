@@ -1,7 +1,7 @@
 
 from keyboard import add_hotkey
 from .config import constants as c
-from . import mode, page_navigator
+from . import page_navigator
 from .grab import grab_from_mouse
 from .fetch import go_fetch
 from quick_fetch import logger
@@ -13,9 +13,9 @@ def register_hotkeys():
     from .main import CONFIG, MODE
     hotkeys = CONFIG.get_hotkeys()
 
-    if MODE == mode._MODE_MOUSE:
+    if MODE.lower == 'mouse':
         download_function = grab_from_mouse
-    elif MODE == mode._MODE_XPATH:
+    elif MODE.lower == 'xpath':
         download_function = go_fetch
 
     # TODO if any hotkey is empty then return null function
