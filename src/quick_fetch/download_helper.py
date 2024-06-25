@@ -9,13 +9,12 @@ def download_wait(directory, timeout=120, nfiles=None):
     """
     Wait for downloads to finish with a specified timeout.
 
-    Args
-    ----
-        directory : str
+    Args:
+        directory (str):
             The path to the folder where the files will be downloaded.
-        timeout : int
+        timeout (int):
             How many seconds to wait until timing out.
-        nfiles : int, defaults to None
+        nfiles (int): defaults to None
             If provided, also wait for the expected number of files.
 
     """

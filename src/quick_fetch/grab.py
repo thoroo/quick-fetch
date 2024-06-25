@@ -19,10 +19,10 @@ def grab_from_mouse(mode):
     """
     Choosing mode for mouse, either directly or indirectly.
     
-    Parameters:
+    Args:
         mode (str): String of either 'direct' or 'indirect'
 
-    Returns:
+    Return:
         None    
     """
     from .main import USE_SOUND
@@ -79,6 +79,8 @@ def grab_directly():
     file_url = grab_url_from_mouse('o')
 
     if file_url == None:
+        logger.warning('No URL was found.')
+        chime.warning()
         return
 
     save_file_from_url(file_url)

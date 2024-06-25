@@ -64,7 +64,7 @@ def run():
 
     while True:
         time.sleep(0.5)
-        logger.info("Awaiting input..") # TODO Fix that it is only shown once
+        logger.info("Awaiting input..")
         keyboard.wait()
         time.sleep(0.5)
 
