@@ -6,6 +6,7 @@ import chime
 import logging
 import configchecker as checker
 import keyboard
+from pyautogui import KEYBOARD_KEYS
 from configparser import ConfigParser
 from colorama import Fore
 from ast import literal_eval
@@ -87,9 +88,7 @@ class QuickFetchConfig(ConfigParser):
         """Validate the values present in the config file"""
 
         log_levels = '(' + '|'.join(logging.getLevelNamesMapping().keys()) + ')'
-        keys = ['F4', 'F8', 'F9', 'right', 'left'] # TODO add keys using dict
-        #keyboard_keys = '(' + '|'.join([*keyboard._canonical_names.canonical_names.values()][0:63]) + ')'
-        keyboard_keys = '(' + '|'.join(keys) + ')'
+        keyboard_keys = '(' + '|'.join(KEYBOARD_KEYS) + ')'
         sound_themes = '(' + '|'.join(chime.themes()) + ')'
         schema = checker.ConfigSchema()
             
