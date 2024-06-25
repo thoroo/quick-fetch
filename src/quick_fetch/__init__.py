@@ -1,9 +1,8 @@
 import logging
 from rich.logging import RichHandler
-from colorama import Fore
 
 logging.basicConfig(
-    level='INFO', #TODO read log level from config
+    level='INFO',
     format='%(message)s',
     datefmt='[%X]',
     handlers=[RichHandler(rich_tracebacks=True)]
