@@ -23,9 +23,7 @@ QuickFetch is a semi-automatic tool that requires user input and is meant to be 
 
 - Add better exception handling
 - Add custom scroller for pages with lazy loading
-- Add config validation
 - Ensuring host name is correct when navigating using next or previous button. In case a website has some sort of redirect URL to a external site
-- Better handling of reserved characters inside file names and paths
 - Maybe implement some sort of asynch functionality to be able to press for next item instead of waiting.
     - Temp folder needs to be reworked in that case
 - Add example config for showcasing XPaths
