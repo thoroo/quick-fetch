@@ -11,7 +11,7 @@ def register_hotkeys():
     """Register hotkeys based on values present in the selected config"""
     from .main import CONFIG, MODE
 
-    hotkeys = CONFIG.get_hotkeys()
+    hotkeys = CONFIG.get_section(c.SECTION_HOTKEY)
     if MODE == 'mouse':
         download_function = grab_from_mouse
     elif MODE == 'xpath':

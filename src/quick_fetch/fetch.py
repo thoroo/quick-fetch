@@ -79,7 +79,7 @@ def fetch_indirectly():
         ext = ''
     else:
         ext = '.*'
-
+        
     if len(glob(os.path.join(PATH_OUTPUT, file_name + ext))) > 0:
         logger.warning(f'Target file already exists in output folder! {Fore.RED}Skipping!{Fore.WHITE}')
         if USE_SOUND:
@@ -94,7 +94,7 @@ def fetch_indirectly():
     download_wait(PATH_TEMP.name)
 
     if len(os.listdir(PATH_TEMP.name)) == 0:
-        logger.error(f'Download was not able to start! Most likely a "404 Not Found". {Fore.YELLOW}Skipping!{Fore.WHITE}')
+        logger.error(f'Download was not able to start! Most likely a {Fore.RED}"404 Not Found"{Fore.WHITE}. {Fore.YELLOW}Skipping!{Fore.WHITE}')
         if USE_SOUND:
             chime.error()
         return

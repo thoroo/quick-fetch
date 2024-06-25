@@ -1,16 +1,22 @@
 import os
 import shutil
 import glob
-import chime
 import inquirer
+import chime
+import logging
+import configchecker as checker
+import keyboard
 from configparser import ConfigParser
+from colorama import Fore
 from ast import literal_eval
 from pathlib import Path
 from quick_fetch import logger
-from .config.exceptions import ConfigError
 from .config import constants as c
 
 CONFIG_DIR_PATH = os.path.join(Path(__file__).parent.parent.parent, c._CONFIG_DIR)
+
+def value_range(min, max):
+    return [str(x) for x in [*range(min, max + 1)]]
 
 def pick_config():
     """Lets user pick config from those found in config files folder"""
@@ -49,18 +55,15 @@ def load_config():
 
     return QuickFetchConfig(conf)
 
-def validate_config_values():
-    """Validate the values present in the config file"""
-    () # TODO
-
 class QuickFetchConfig(ConfigParser):
     """Provides global access to loaded configuration options as a ConfigParser subclass."""
 
     def __init__(self, config_file: Path | None = None) -> None:
-        super(ConfigParser, self).__init__(delimiters="=")
+        super(ConfigParser, self).__init__()
 
         if config_file:
-            self._read_config_file(config_file)
+            self._read_config(config_file)
+            #self._validate_config()
         else:
             from .main import CONFIG as config_file
 
@@ -70,16 +73,54 @@ class QuickFetchConfig(ConfigParser):
             shutil.copyfile('./src/quick_fetch/config/default.ini', './config_files/default.ini') #TODO fix paths
             logger.log("Recreated default config.ini in './config_files/'")
         except OSError as err:
-            raise ConfigError("Error in recreating internal default to './config_files/") from err
+            raise err("Error in recreating internal default to './config_files/") from err
         
-    def _read_config_file(self, config_file: Path) -> None:
+    def _read_config(self, config_file: Path) -> None:
         """Attempt reading the config"""
         try:
             self.read(config_file)
             logger.debug(f"Read config file '{config_file}'", )
         except OSError as err:
-            raise ConfigError("Error reading configuration file '%s': %s", config_file, err) from err
+            raise err("Error reading configuration file '%s': %s", config_file, err) from err
+        
+    def _validate_config(self) -> None:
+        """Validate the values present in the config file"""
 
+        log_levels = '(' + '|'.join(logging.getLevelNamesMapping().keys()) + ')'
+        keys = ['F4', 'F8', 'F9', 'right', 'left'] # TODO add keys using dict
+        #keyboard_keys = '(' + '|'.join([*keyboard._canonical_names.canonical_names.values()][0:63]) + ')'
+        keyboard_keys = '(' + '|'.join(keys) + ')'
+        sound_themes = '(' + '|'.join(chime.themes()) + ')'
+        schema = checker.ConfigSchema()
+            
+        try:
+            with schema.section(c.SECTION_GENERAL) as section:
+                section.value(key_val=c.KEY_MODE, value_val=checker.ItemRegexValidator('(Mouse|XPath)'))
+                section.value(key_val=c.KEY_UNZIP, value_val=checker.ItemRegexValidator('(True|False)'))
+                section.value(key_val=checker.ItemRegexValidator(r'.*.fix'), required=False)
+                section.value(key_val=c.KEY_SOUND, value_val=checker.ItemRegexValidator(sound_themes))
+                section.value(key_val=c.KEY_LOG_LEVEL, value_val=checker.ItemRegexValidator(log_levels)).no_other()
+
+            with schema.section(c.SECTION_HOTKEY) as section:
+                section.value(key_val=checker.ItemRegexValidator(r'.*(Exit|Download)'), 
+                            value_val=checker.ItemRegexValidator(keyboard_keys), required=True)
+                section.value(key_val=checker.ItemRegexValidator(r'.*(Scroller|Page)'), 
+                            value_val=checker.ItemRegexValidator(keyboard_keys), required=False).no_other()
+
+            with schema.section(c.SECTION_PATH) as section:
+                pass
+
+            with schema.section(c.SECTION_XPATH) as section:
+                pass
+
+            schema.no_other()
+            checker.ConfigSchemaValidator(schema).validate(self)
+
+        except:
+            # TODO make it more informative
+            logger.error(f'Config has invalid keys, values or structure. {Fore.RED}Exiting!{Fore.WHITE}')
+            os._exit(0)
+        
     def read_general(self, key):
         """Get values for keys present in the General section of the config"""
         value = self[c.SECTION_GENERAL][key]
@@ -102,6 +143,6 @@ class QuickFetchConfig(ConfigParser):
         """Get values for keys present in the XPath section of the config"""
         return self.get(c.SECTION_XPATH, key)
     
-    def get_hotkeys(self):
-        """Get all keys present in the General section of the config"""
-        return dict(self.items(c.SECTION_HOTKEY))
+    def get_section(self, section):
+        """Get all items present in a section of the config"""
+        return dict(self.items(section))
