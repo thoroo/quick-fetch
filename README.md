@@ -5,7 +5,7 @@ QuickFetch is a semi-automatic tool that requires user input and is meant to be 
 
 ### Key features
 
-- Saves all downloads in a user specified directory
+- Saves downloads in a user specified directory
 - Downloads an image direct from an image link
 - Downloads an image in which one must click on a link to get to image page (e.g. grid of lazy loading images)
 - Downloads a file direct from a source link (WIP Currently not implemented)
@@ -22,6 +22,7 @@ QuickFetch is a semi-automatic tool that requires user input and is meant to be 
 ### ToDo
 
 - Add better exception handling
+- Add custom scroller for pages with lazy loading
 - Add config validation
 - Ensuring host name is correct when navigating using next or previous button. In case a website has some sort of redirect URL to a external site
 - Better handling of reserved characters inside file names and paths
@@ -31,6 +32,17 @@ QuickFetch is a semi-automatic tool that requires user input and is meant to be 
 - Add functionality in user other drivers, e.g. IE and Firefox
 - Add combined functionality between `grab` and `fetch`
 - Add logging to file if that is of interest
+- Add custom formatting of metadata strings
+- Add grabbing videos from streaming platforms using `youtube-dl`
+- Reduce time between input and grabbing the URL from `XPath mode`
+- Reduce time between input and grabbing indirectly using `Mouse mode`. Sits currently at roughly 10 seconds (however, no issues regarding user input)
+
+### Current issues
+
+- 5 second lag for `XPath mode´ and an indirect grab, additionally when you change tab or window during this time period it might grab the URL from the changed tab/window
+- Checking for downloaded files has a timeout for 120 seconds. If download speed is low or if the file is large enough, it will cut off the download and close the application
+- Acronyms that have all capitals are turned into title case
+- Rich console shows code when not in administrator mode when using CMD
 
 ## Installation
 
@@ -42,7 +54,7 @@ pip install git+https://github.com/Phiido/quick-fetch
 - Can currently **only** run on Chrome and its driver
 
 Default config file can be found in project folder './config_files/'. For custom settings, make a copy of
-the config file and rename it (for example hostname of the page), adjust settings for your needs. See below 
+the config file and rename it (for example hostname of the page you want to target), adjust settings for your needs. See below 
 for detailed information on config settings.
 
 If you want to use page navigator buttons, create a copy of the button image(s) that are present on screen in the Chrome window, they can be setup anywhere as config reads which paths where they are located.
