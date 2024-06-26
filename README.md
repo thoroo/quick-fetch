@@ -22,6 +22,7 @@ QuickFetch is a semi-automatic tool that requires user input and is meant to be 
 ### ToDo
 
 - Add better exception handling
+- Implement downloading of file from direct source
 - Add custom scroller for pages with lazy loading
 - Maybe implement some sort of asynch functionality to be able to press for next item instead of waiting.
     - Temp folder needs to be reworked in that case
@@ -73,7 +74,7 @@ python3 -m quick-fetch
 
 - Choosing which config from those that are available in './config_files/.
 
-**Note:** There is some validation of button clicks and copied URLs when using `Mouse mode`, however, Chrome has implemented quick access to *Reading Mode* that will be opened instead when pressing the hotkey for `Direct download` when over a non-link element. A workaround is to disable *Reading Mode* from Chrome flags (<chrome://flags/>).
+**Note:** There is some validation of button clicks and copied URLs when using `Mouse mode`, however, Chrome has implemented quick access to *Reading Mode* that will be opened instead when pressing the hotkey for `Direct download` when hovering over a non-link element. A workaround is to disable *Reading Mode* from Chrome flags (<chrome://flags/>).
 
 ## Config settings
 
@@ -99,8 +100,8 @@ The config is divided into the following sections:
 
 ### Paths
 - OutputDirectory: Path to folder where downloads should end up at
-- NextPageImg: Path for image of next button
-- PreviousPageImg: Path for image of previous button
+- ButtonNextPage: Path for image of next button
+- ButtonPreviousPage: Path for image of previous button
 
 ### XPath
 
