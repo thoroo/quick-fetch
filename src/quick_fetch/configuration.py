@@ -3,17 +3,13 @@ import shutil
 import glob
 import inquirer
 import chime
-import logging
-import configchecker as checker
-import keyboard
-from pyautogui import KEYBOARD_KEYS
 from configparser import ConfigParser
-from colorama import Fore
 from ast import literal_eval
 from pathlib import Path
 from quick_fetch import logger
 from .config import constants as c
 
+# TODO rework path creation
 CONFIG_DIR_PATH = os.path.join(Path(__file__).parent.parent.parent, c._CONFIG_DIR)
 
 def value_range(min, max):
@@ -63,11 +59,13 @@ class QuickFetchConfig(ConfigParser):
         super(ConfigParser, self).__init__()
 
         if config_file:
+            self.optionxform = str # enables case-sensitive keys
             self._read_config(config_file)
-            #self._validate_config()
+            self._validate_config()
         else:
             from .main import CONFIG as config_file
 
+    # TODO redo to use ConfigParsers default value handling
     def _recreate_default_file(self) -> None:
         """If no config file is found, default to internal config and recreate."""
         try:
@@ -84,45 +82,56 @@ class QuickFetchConfig(ConfigParser):
         except OSError as err:
             raise err("Error reading configuration file '%s': %s", config_file, err) from err
         
-    def _validate_config(self) -> None:
-        """Validate the values present in the config file"""
+    def _validate_config(self):
+        """
+        Validates ConfigParser and returns errors.
+        Compares a ConfigParser with a template dict or ConfigParser 
+        and returns errors if there are invalid sections, invalid keys,
+        or values of wrong type or value.
+        """
+        errors = []
+        # config_get_map = {str: self.get,
+        #                   int: self.getint,
+        #                   float: self.getfloat,
+        #                   bool: self.getboolean}
+        
+        for section in self.sections():
+            if section not in c.VALID_VALUES.keys():
+                errors.append(f'Invalid section in config: "{section}"')
+                continue
 
-        log_levels = '(' + '|'.join(logging.getLevelNamesMapping().keys()) + ')'
-        keyboard_keys = '(' + '|'.join(KEYBOARD_KEYS) + ')'
-        sound_themes = '(' + '|'.join(chime.themes()) + ')'
-        schema = checker.ConfigSchema()
-            
-        try:
-            with schema.section(c.SECTION_GENERAL) as section:
-                section.value(key_val=c.KEY_MODE, value_val=checker.ItemRegexValidator('(Mouse|XPath)'))
-                section.value(key_val=c.KEY_UNZIP, value_val=checker.ItemRegexValidator('(True|False)'))
-                section.value(key_val=checker.ItemRegexValidator(r'.*.fix'), required=False)
-                section.value(key_val=c.KEY_SOUND, value_val=checker.ItemRegexValidator(sound_themes))
-                section.value(key_val=c.KEY_LOG_LEVEL, value_val=checker.ItemRegexValidator(log_levels)).no_other()
+            for conf_key, conf_val in self.items(section):
+                if section == c.SECTION_HOTKEY:
+                    conf_val = conf_val.lower()
 
-            with schema.section(c.SECTION_HOTKEY) as section:
-                section.value(key_val=checker.ItemRegexValidator(r'.*(Exit|Download)'), 
-                            value_val=checker.ItemRegexValidator(keyboard_keys), required=True)
-                section.value(key_val=checker.ItemRegexValidator(r'.*(Scroller|Page)'), 
-                            value_val=checker.ItemRegexValidator(keyboard_keys), required=False).no_other()
+                if conf_key not in c.VALID_VALUES[section].keys():
+                    errors.append(f'Invalid key "{conf_key}" in section "{section}"')
+                    continue
 
-            with schema.section(c.SECTION_PATH) as section:
-                pass
+                if c.VALID_VALUES[section][conf_key]['required']:
+                    if conf_val not in c.VALID_VALUES[section][conf_key]['values']:
+                        errors.append(f'Invalid value "{conf_val}" for key "{conf_key}" in section "{section}"')
 
-            with schema.section(c.SECTION_XPATH) as section:
-                pass
+                # TODO add type validation
+                # valid_val_type = type(c.VALUES_VALID[section][conf_key])
+                # try:
+                #     config_get_map[valid_val_type](section, conf_key)
+                # except ValueError:
+                #     errors.append(f'Invalid value type for key "{conf_key}" in section "{section}": "{conf_val}"')
+        
+        if len(errors) > 0:
+            chime.error()
 
-            schema.no_other()
-            checker.ConfigSchemaValidator(schema).validate(self)
-
-        except:
-            # TODO make it more informative
-            logger.error(f'Config has invalid keys, values or structure. {Fore.RED}Exiting!{Fore.WHITE}')
+            for err in errors:
+                logger.error(err)
+           
             os._exit(0)
+        
+        logger.debug('Config validated successfully!')
         
     def read_general(self, key):
         """Get values for keys present in the General section of the config"""
-        value = self[c.SECTION_GENERAL][key]
+        value = self.get(c.SECTION_GENERAL, key)
 
         # ensures that booleans are read as such and not as strings
         list = ['False', 'True']

@@ -19,27 +19,27 @@ def register_hotkeys():
     
     # TODO if any hotkey is empty then return null function
 
-    add_hotkey(hotkeys.get(c.KEY_EXIT.lower()),
+    add_hotkey(hotkeys.get(c.KEY_EXIT),
                clean_exit,
                suppress=True,
                trigger_on_release=True)
 
-    add_hotkey(hotkeys.get(c.KEY_DOWNLOAD_DIRECT.lower()), 
+    add_hotkey(hotkeys.get(c.KEY_DOWNLOAD_DIRECT), 
                lambda: download_function('direct'),
                suppress=True,
                trigger_on_release=True)
 
-    add_hotkey(hotkeys.get(c.KEY_DOWNLOAD_INDIRECT.lower()),
+    add_hotkey(hotkeys.get(c.KEY_DOWNLOAD_INDIRECT),
                lambda: download_function('indirect'),
                suppress=True,
                trigger_on_release=True)
 
-    add_hotkey(hotkeys.get(c.KEY_NEXT_PAGE.lower()),
+    add_hotkey(hotkeys.get(c.KEY_NEXT_PAGE),
                page_navigator.get_next_page,
                suppress=True,
                trigger_on_release=True)
 
-    add_hotkey(hotkeys.get(c.KEY_PREVIOUS_PAGE.lower()),
+    add_hotkey(hotkeys.get(c.KEY_PREVIOUS_PAGE),
                page_navigator.get_previous_page,
                suppress=True,
                trigger_on_release=True)
