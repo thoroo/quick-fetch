@@ -13,10 +13,9 @@ from .hotkeys import register_hotkeys
 from .driver import create_driver
 from .exit_handler import clean_exit
 
-
 def run():
     """Main function to run the application"""
-
+    
     global MODE
     global CONFIG
     global PATH_OUTPUT
@@ -26,6 +25,10 @@ def run():
 
     CONFIG = load_config()
     MODE = CONFIG.read_general(c.KEY_MODE).lower()
+
+    if not c.RESOURCES_DIR.exists():
+        c.RESOURCES_DIR.mkdir()
+
     register_hotkeys()
 
     PATH_TEMP = TemporaryDirectory()

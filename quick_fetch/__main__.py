@@ -1,6 +1,8 @@
 from colorama import Fore
-from .main import run
+import quick_fetch
+from quick_fetch.main import run
+from quick_fetch import logger
 
 if __name__ == '__main__':
-    print(f'{Fore.GREEN}Welcome to QuickFetch!{Fore.WHITE}')
+    logger.info(f"{Fore.CYAN}QuickFetch{Fore.WHITE} {quick_fetch.__version__}")
     run()
