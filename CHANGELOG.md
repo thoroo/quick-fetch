@@ -1,8 +1,20 @@
 # Changelog
 
+## 0.2.0
+
+Restructured scripts while maintaning functionality.
+
+- Changed
+    - Moved `Mode` selection into config
+- Added
+    - Added option to disable sound
+    - Added hotkey/URL validation with added exception handling
+    - Added basic config validation
+    - Added check for hostname match for navigation buttons
+
 ## 0.1.0
 
-Initial commit with working version of project
+Initial commit with working version of project.
 
 - Added
     - Download image directly

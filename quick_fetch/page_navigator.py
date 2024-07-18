@@ -4,9 +4,6 @@ import pyautogui
 import chime
 from urllib.parse import urlparse
 from quick_fetch import logger
-from pyscreeze import locateOnScreen
-from pyscreeze import ImageNotFoundException
-
 
 def _click_on_page(image):
     """
@@ -19,7 +16,7 @@ def _click_on_page(image):
         None
     """
     try:
-        button = locateOnScreen(image, confidence=0.7)
+        button = pyautogui.locateOnScreen(image, confidence=0.7)
 
         # selects address bar and then copies the current URL
         pyautogui.hotkey('ctrl', 'l')
@@ -41,7 +38,7 @@ def _click_on_page(image):
         
         pyautogui.click(button)
 
-    except ImageNotFoundException:
+    except pyautogui.ImageNotFoundException:
         logger.error('Could not locate button. Ensure they are present on screen.')
 
 def get_next_page():

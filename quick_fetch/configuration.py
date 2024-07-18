@@ -10,7 +10,7 @@ from quick_fetch import logger
 from .config import constants as c
 
 # TODO rework path creation
-CONFIG_DIR_PATH = os.path.join(Path(__file__).parent.parent.parent, c._CONFIG_DIR)
+CONFIG_DIR_PATH = os.path.join(Path(__file__).parent.parent, c._CONFIG_DIR)
 
 def value_range(min, max):
     return [str(x) for x in [*range(min, max + 1)]]

@@ -64,7 +64,7 @@ Finding XPaths for an element can be done by going into DevTools (pressing F12 f
 ## Usage
 
 ```bash
-python3 -m quick-fetch
+python3 -m quick_fetch
 ```
 
 - Setting the mode of operation in config: 
