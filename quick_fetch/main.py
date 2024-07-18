@@ -5,16 +5,18 @@ import logging
 import atexit
 import keyboard
 import chime
-from colorama import Fore
+from colorama import Fore, init
 from quick_fetch import logger
 from quick_fetch import constants as c
-from .configuration import load_config
-from .hotkeys import register_hotkeys
-from .driver import create_driver
-from .exit_handler import clean_exit
+from quick_fetch.configuration import load_config
+from quick_fetch.hotkeys import register_hotkeys
+from quick_fetch.driver import create_driver
+from quick_fetch.exit_handler import clean_exit
 
 def run():
     """Main function to run the application"""
+    # helps rich logger to properly output colors
+    init(convert=True)
     
     global MODE
     global CONFIG
