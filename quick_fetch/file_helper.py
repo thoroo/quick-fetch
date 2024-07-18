@@ -1,7 +1,7 @@
  
 import os
 import fnmatch
-from .config import constants as c
+from quick_fetch import constants as c
 
 def file_exists(dir, str):
     pattern = f'{str}*'

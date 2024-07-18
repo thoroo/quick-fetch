@@ -8,7 +8,7 @@ import chime
 from colorama import Fore
 from pathlib import Path
 from quick_fetch import logger
-from .config import constants as c
+from quick_fetch import constants as c
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC

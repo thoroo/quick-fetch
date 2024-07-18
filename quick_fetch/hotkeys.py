@@ -1,11 +1,11 @@
 
 from keyboard import add_hotkey
-from .config import constants as c
-from . import page_navigator
-from .grab import grab_from_mouse
-from .fetch import go_fetch
+from quick_fetch import constants as c
+from quick_fetch import page_navigator
+from quick_fetch.grab import grab_from_mouse
+from quick_fetch.fetch import go_fetch
 from quick_fetch import logger
-from .exit_handler import clean_exit
+from quick_fetch.exit_handler import clean_exit
     
 def register_hotkeys():
     """Register hotkeys based on values present in the selected config"""

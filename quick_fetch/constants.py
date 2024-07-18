@@ -1,9 +1,11 @@
+from pathlib import Path
 import chime
 import logging
 
-_CONFIG_FILE = 'default.ini'
-_CONFIG_DIR = 'config_files'
-_INTERNAL_CONFIG_FILE = "default.ini"
+CONFIG_DIR = Path.cwd() / 'configs'
+CONFIG_FILE = CONFIG_DIR / 'default.ini'
+
+RESOURCES_DIR = Path.cwd() / 'resources'
 
 SECTION_GENERAL = 'General'
 KEY_MODE = 'Mode'

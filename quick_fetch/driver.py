@@ -3,8 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from pywinauto import Application
 from quick_fetch import logger
-from .config import constants as c
-from .exceptions import FailedGrabError 
+from quick_fetch import constants as c
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 

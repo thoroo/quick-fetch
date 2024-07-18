@@ -1,5 +1,4 @@
 import os
-import shutil
 import glob
 import inquirer
 import chime
@@ -7,20 +6,46 @@ from configparser import ConfigParser
 from ast import literal_eval
 from pathlib import Path
 from quick_fetch import logger
-from .config import constants as c
-
-# TODO rework path creation
-CONFIG_DIR_PATH = os.path.join(Path(__file__).parent.parent, c._CONFIG_DIR)
+from . import constants as c
+from colorama import Fore
 
 def value_range(min, max):
     return [str(x) for x in [*range(min, max + 1)]]
 
+def create_default_config_file():
+    config = ConfigParser()
+    config.optionxform = str # enables case-sensitive keys
+
+    if not c.CONFIG_FILE.exists():
+        config["General"] = {"Mode": "Mouse",
+                             "Unzip": False,
+                             "Prefix": "",
+                             "Suffix": "",
+                             "ThemeSound": "big-sur",
+                             "LogLevel": "INFO"}
+        config["Hotkeys"] = {"Exit": "F4",
+                             "DirectDownload": "F8",
+                             "IndirectDownload": "F9",
+                             "NextPage": "Right",
+                             "PreviousPage": "Left"}
+        config["Paths"] = {"OutputDirectory": os.path.join(os.getenv("USERPROFILE"), "Downloads"),
+                           "ButtonNextPage": "",
+                           "ButtonPreviousPage": ""}
+        config["XPath"] = {"String1": "",
+                           "String2": "",
+                           "MoveIntoURL": "",
+                           "FileDownload": "",
+                           "Gatekeeper": ""}
+        with open(c.CONFIG_FILE, "w") as configfile:
+            config.write(configfile)
+
 def pick_config():
     """Lets user pick config from those found in config files folder"""
 
-    original_config_list = glob.glob('*.ini', root_dir=CONFIG_DIR_PATH)
-    index_default = original_config_list.index(c._CONFIG_FILE)
-    original_config_list.insert(0, original_config_list.pop(index_default))
+    original_config_list = glob.glob('*.ini', root_dir=c.CONFIG_DIR)
+    if c.CONFIG_FILE.name in original_config_list:
+        original_config_list.remove(c.CONFIG_FILE.name)
+        original_config_list.insert(0, c.CONFIG_FILE.name)
     new_config_list = list(map(lambda str: str.replace('.ini', ''), original_config_list))
     new_config_list = list(map(str.title, new_config_list))
 
@@ -33,23 +58,25 @@ def pick_config():
     chosen_value = next(iter(inquirer.prompt(question).values()))
     index = new_config_list.index(chosen_value)
 
-    return os.path.join(CONFIG_DIR_PATH, original_config_list[index])
+    return c.CONFIG_DIR / original_config_list[index]
 
 def load_config():
     """Attempts to load a config depending on how many there are in the config files folder"""
-    n_config = len(os.listdir(CONFIG_DIR_PATH))
 
-    if n_config > 1:
+    if not c.CONFIG_DIR.exists():
+        c.CONFIG_DIR.mkdir()        
+
+    n_config = len(os.listdir(c.CONFIG_DIR))
+
+    if  n_config == 0:
+        create_default_config_file()
+        conf = c.CONFIG_FILE
+    elif n_config == 1:
+        conf = c.CONFIG_DIR / os.listdir(c.CONFIG_DIR)[0]
+    elif n_config > 1:
         conf = pick_config()
 
-    elif  n_config < 0:
-        logger.error('Missing config files! Recreating default config..')
-        QuickFetchConfig()._recreate_default_file()
-        n_config = 1
-
-    elif n_config == 1:
-        conf = os.listdir(c._CONFIG_DIR)[0]
-
+    logger.info(f"Using config file: {Fore.CYAN}{conf.name}{Fore.WHITE}")
     return QuickFetchConfig(conf)
 
 class QuickFetchConfig(ConfigParser):
@@ -61,19 +88,10 @@ class QuickFetchConfig(ConfigParser):
         if config_file:
             self.optionxform = str # enables case-sensitive keys
             self._read_config(config_file)
-            self._validate_config()
+            #self._validate_config()
         else:
             from .main import CONFIG as config_file
-
-    # TODO redo to use ConfigParsers default value handling
-    def _recreate_default_file(self) -> None:
-        """If no config file is found, default to internal config and recreate."""
-        try:
-            shutil.copyfile('./src/quick_fetch/config/default.ini', './config_files/default.ini') #TODO fix paths
-            logger.log("Recreated default config.ini in './config_files/'")
-        except OSError as err:
-            raise err("Error in recreating internal default to './config_files/") from err
-        
+       
     def _read_config(self, config_file: Path) -> None:
         """Attempt reading the config"""
         try:

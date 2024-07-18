@@ -7,7 +7,7 @@ import keyboard
 import chime
 from colorama import Fore
 from quick_fetch import logger
-from .config import constants as c
+from quick_fetch import constants as c
 from .configuration import load_config
 from .hotkeys import register_hotkeys
 from .driver import create_driver

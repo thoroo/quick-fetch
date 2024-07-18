@@ -5,15 +5,14 @@ import pyperclip
 import requests
 import chime
 import validators
-from validators import ValidationError
 from colorama import Fore
 from urllib.parse import urlparse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from quick_fetch import logger
-from .config import constants as c
-from .driver import element_exist
+from quick_fetch import constants as c
+from quick_fetch.driver import element_exist
 
 def grab_from_mouse(mode):
     """
