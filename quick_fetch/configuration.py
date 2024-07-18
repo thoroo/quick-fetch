@@ -43,9 +43,11 @@ def pick_config():
     """Lets user pick config from those found in config files folder"""
 
     original_config_list = glob.glob('*.ini', root_dir=c.CONFIG_DIR)
+    
     if c.CONFIG_FILE.name in original_config_list:
         original_config_list.remove(c.CONFIG_FILE.name)
         original_config_list.insert(0, c.CONFIG_FILE.name)
+
     new_config_list = list(map(lambda str: str.replace('.ini', ''), original_config_list))
     new_config_list = list(map(str.title, new_config_list))
 
