@@ -1,10 +1,11 @@
 # QuickFetch
 A python script (mainly for personal use and may not be as applicable to other situations; flexibility has been in mind though) that enables downloading a single file or image from the active web browser tab (using `pywinauto`) when a keyboard button is pressed and downloads using a headless Chrome driver (using `selenium`). Ability to navigate pages using `PyScreeze` image locator.
 
-QuickFetch is a semi-automatic tool that requires user input and is meant to be used to reduce time spent in order to download a file or image when looking at individual items in a page using a grid or lazy loading that are presented on screen.
+QuickFetch is a semi-automatic tool that requires user input and is meant to be used to reduce time spent in order to download a file or image when looking at individual items in a page that are using a grid or lazy loading.
 
 ### Key features
 
+- Config selection to setup different settings for different pages
 - Saves downloads in a user specified directory
 - Downloads an image direct from an image link
 - Downloads an image in which one must click on a link to get to image page (e.g. grid of lazy loading images)
@@ -13,11 +14,10 @@ QuickFetch is a semi-automatic tool that requires user input and is meant to be 
 - Can grab metadata (currently only two strings/elements) to use for file naming
 - Can unzip files after download
 - Can handle buttons on page that requires user input in order to show content on page, i.e. gatekeeping buttons such as age restrictions
-- Quick button to move to previous or next page (works by Pyscreeze locating image of button on screen)
-- Config selection to setup different settings for different pages
+- Button to move to previous or next page (works by Pyscreeze locating image of button on screen)
 - Adding suffix or prefix to downloaded files
 - Clean and colorful console logs
-- Sound chimes to indicate whether a download is finished
+- Sound chimes to indicate whether a download is successful or has failed
 
 ### ToDo
 
@@ -40,22 +40,20 @@ QuickFetch is a semi-automatic tool that requires user input and is meant to be 
 - 5 second lag for `XPath mode´ and an indirect grab, additionally when you change tab or window during this time period it might grab the URL from the changed tab/window
 - Checking for downloaded files has a timeout for 120 seconds. If download speed is low or if the file is large enough, it will cut off the download and close the application
 - Acronyms that have all capitals are turned into title case
-- Rich console shows code when not in administrator mode when using CMD
 
 ## Installation
 
 ```bash
-pip install git+https://github.com/Phiido/quick-fetch
+git clone https://github.com/phiido/quick-fetch
+cd quick-fetch
 ```
 
 - Note that QuickFetch **requires** '>= Python 3.8.0'
-- Can currently **only** run on Chrome and its driver
+- Currently **only** runs using Chrome driver
 
-Default config file can be found in project folder './config_files/'. For custom settings, make a copy of
-the config file and rename it (for example hostname of the page you want to target), adjust settings for your needs. See below 
-for detailed information on config settings.
+Default config file is created during first run and can be found in  './configs/'. For custom settings, make a copy of the config file and rename it (for example hostname of the page you want to target), adjust settings for your needs. See below for detailed information on config settings.
 
-If you want to use page navigator buttons, create a copy of the button image(s) that are present on screen in the Chrome window, they can be setup anywhere as config reads which paths where they are located.
+If you want to use page navigator buttons, create a copy of the button image(s) (by taking a screenshot and then cropping the image) that are present on screen in the Chrome window, they can be setup anywhere as config reads which paths where they are located. However, a folder named './resources/' is created for the purpose of storing them.
 
 Setting up XPaths are required, though not all of them depending on usage.
 
@@ -69,16 +67,16 @@ python3 -m quick_fetch
 
 - Setting the mode of operation in config: 
 
-    - **Mouse:** Grabs the URL from where the mouse pointer is located. Useful for dealing with images
-    - **XPaths:** Moves into either next URL or download link based on configured XPaths. Useful when dealing with files (e.g. zip-files)
+    - **Mouse:** When button is pressed it grabs the URL from where the mouse pointer is located. Useful for dealing with images.
+    - **XPaths:** When button is pressed it moves into either next URL or download link based on configured XPaths. Useful when dealing with files (e.g. zip-files).
 
-- Choosing which config from those that are available in './config_files/.
+- Choosing which config from those that are available in './configs/.
 
 **Note:** There is some validation of button clicks and copied URLs when using `Mouse mode`, however, Chrome has implemented quick access to *Reading Mode* that will be opened instead when pressing the hotkey for `Direct download` when hovering over a non-link element. A workaround is to disable *Reading Mode* from Chrome flags (<chrome://flags/>).
 
 ## Config settings
 
-**Note**: If there are no config files present in './config_files/', QuickFetch will attempt to recreate the default config file.
+**Note**: If there are no config files present in './configs/', QuickFetch will attempt to recreate the default config file.
 
 The config is divided into the following sections:
 
