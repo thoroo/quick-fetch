@@ -1,4 +1,6 @@
 import logging
+import os
+import platform
 from rich.logging import RichHandler
 
 logging.basicConfig(
@@ -11,3 +13,8 @@ logging.basicConfig(
 logger = logging.getLogger('rich')
 
 __version__ = "0.2.0"
+
+if __name__ == '__main__':
+    if platform.system() != 'Windows':
+        logger.error('This application is currently built to run on Windows only')
+        os._exit(0)
