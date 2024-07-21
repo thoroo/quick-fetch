@@ -1,19 +1,21 @@
-
 import pyperclip
 import pyautogui
 import chime
 from urllib.parse import urlparse
+from colorama import Fore
+
 from quick_fetch import logger
 
-def _click_on_page(image):
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+def click_navigator(image):
     """
     Clicks on page for URL redirect and checks for hostname mismatches.
-    
+
     Args:
         image (Path): A image of the button to be clicked.
-
-    Return:
-        None
     """
     try:
         button = pyautogui.locateOnScreen(image, confidence=0.7)
@@ -27,33 +29,39 @@ def _click_on_page(image):
         pyautogui.dragTo(button)
         pyautogui.hotkey('ctrl', 'c')
         button_url = pyperclip.paste()
+        button_url = pyperclip.paste()
 
         current_host = urlparse(current_url)
         button_host = urlparse(button_url)
 
         if current_host != button_host:
-            logger.error('Hostname mismatch for current window and button URL. Check manually the intended button.')
+            logger.error(
+                'Hostname mismatch for current window and button URL. '
+                'Check manually the intended button.')
             chime.error()
             return
-        
+
         pyautogui.click(button)
 
     except pyautogui.ImageNotFoundException:
-        logger.error('Could not locate button. Ensure they are present on screen.')
+        logger.error('Could not locate button. Ensure it is present on screen.')
+    
+def click_on_page(xpath):
+    from __main__ import DRIVER
+    logger.debug(f'Clicking on the following element: {Fore.BLUE}{xpath}{Fore.WHITE}')
+    WebDriverWait(DRIVER, timeout=10, poll_frequency=2).until(EC.element_to_be_clickable((By.XPATH, xpath))).click()
 
 def get_next_page():
     """Presses the button for the next page/URL"""
-    from .main import CONFIG
+    from __main__ import CONFIG
 
     logger.debug('Moving on to next page..')
-    button_image = CONFIG.read_path('NextPageImage') # TODO configparser for some reason returns the constant key as lowercase
-    _click_on_page(button_image)
+    click_navigator(CONFIG.read_path('NextPageImage'))
+
 
 def get_previous_page():
     """Presses the button for the previous page/URL"""
-    from .main import CONFIG
+    from __main__ import CONFIG
 
     logger.debug('Moving on to the previous page..')
-    button_image = CONFIG.read_path('PreviousPageImage') # TODO configparser for some reason returns the constant key as lowercase
-    _click_on_page(button_image)
-    
+    click_navigator(CONFIG.read_path('PreviousPageImage'))

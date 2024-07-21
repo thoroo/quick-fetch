@@ -1,17 +1,11 @@
 from pathlib import Path
-import chime
-import logging
 
-CONFIG_DIR = Path.cwd() / 'configs'
-CONFIG_FILE = CONFIG_DIR / 'default.ini'
-
-RESOURCES_DIR = Path.cwd() / 'resources'
+SETTINGS_DIR = Path.cwd() / 'settings'
+CONFIG_FILE = SETTINGS_DIR / 'config.ini'
+INSTRUCTIONS_FILE = SETTINGS_DIR / 'instructions.json5'
 
 SECTION_GENERAL = 'General'
 KEY_MODE = 'Mode'
-KEY_UNZIP = 'Unzip'
-KEY_PREFIX = 'Prefix'
-KEY_SUFFIX = 'Suffix'
 KEY_SOUND = 'ThemeSound'
 KEY_LOG_LEVEL = 'LogLevel'
 
@@ -22,19 +16,25 @@ KEY_DOWNLOAD_INDIRECT = 'IndirectDownload'
 KEY_NEXT_PAGE = 'NextPage'
 KEY_PREVIOUS_PAGE = 'PreviousPage'
 
-SECTION_PATH = 'Paths'
-KEY_OUTPUT_DIR = 'OutputDirectory'
-KEY_NEXT_PAGE_IMG = 'ButtonNextPage'
-KEY_PREVIOUS_PAGE_IMG = 'ButtonPreviousPage'
+MODES = [
+    'direct',
+    'indirect'
+]
 
-SECTION_XPATH = 'XPath'
-KEY_XPATH_STRING1 = 'String1'
-KEY_XPATH_STRING2 = 'String2'
-KEY_XPATH_NEXT_URL = 'MoveIntoURL'
-KEY_XPATH_DOWNLOAD = 'FileDownload'
-KEY_XPATH_GATEKEEPER = 'Gatekeeper'
+ACTIONS = [
+    'click',
+    'gatekeeper',
+    'url_from_mouse',
+    'url_from_window',
+    'move_to_url',
+    'download'
+]
 
-KEY_EMPTY = ''
+FORMATS = [    
+    'format',
+    'add-prefix',
+    'add-suffix'
+]
 
 KEYBOARD_KEYS = [
     "0",
@@ -139,33 +139,3 @@ KEYBOARD_KEYS = [
     "winleft",
     "winright"
 ]
-
-VALID_VALUES = {
-    SECTION_GENERAL: {
-        KEY_MODE: {'values': ['Mouse', 'XPath'], 'required': True},
-        KEY_UNZIP: {'values': ['True', 'False'], 'required': True},
-        KEY_PREFIX: {'values': [], 'required': False},
-        KEY_SUFFIX: {'values': [], 'required': False},
-        KEY_SOUND: {'values': chime.themes(), 'required': True},
-        KEY_LOG_LEVEL: {'values': list(logging.getLevelNamesMapping().keys()), 'required': True}
-    },
-    SECTION_HOTKEY: {
-        KEY_EXIT: {'values': KEYBOARD_KEYS, 'required': True},
-        KEY_DOWNLOAD_DIRECT: {'values': KEYBOARD_KEYS, 'required': True},
-        KEY_DOWNLOAD_INDIRECT: {'values': KEYBOARD_KEYS, 'required': False},
-        KEY_NEXT_PAGE: {'values': KEYBOARD_KEYS, 'required': False},
-        KEY_PREVIOUS_PAGE: {'values': KEYBOARD_KEYS, 'required': False}
-    },
-    SECTION_PATH: {
-        KEY_OUTPUT_DIR: {'values': [], 'required': False},
-        KEY_NEXT_PAGE_IMG: {'values': [], 'required': False},
-        KEY_PREVIOUS_PAGE_IMG: {'values': [], 'required': False},
-    },
-    SECTION_XPATH: {
-        KEY_XPATH_STRING1: {'values': [], 'required': False},
-        KEY_XPATH_STRING2: {'values': [], 'required': False},
-        KEY_XPATH_NEXT_URL: {'values': [], 'required': False},
-        KEY_XPATH_DOWNLOAD: {'values': [], 'required': False},
-        KEY_XPATH_GATEKEEPER: {'values': [], 'required': False}
-    }
-}

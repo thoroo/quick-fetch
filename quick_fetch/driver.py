@@ -1,10 +1,13 @@
+import time
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from pywinauto import Application
+
 from quick_fetch import logger
-from quick_fetch import constants as c
+from quick_fetch import constants as const
 from selenium.webdriver.common.by import By
+
 from selenium.common.exceptions import NoSuchElementException
 
 def find_chrome():
@@ -15,24 +18,27 @@ def find_chrome():
     logger.debug('Found top most Chrome window!')
     return app.top_window()
 
-def element_exist(webdriver, xpath):
+def element_exist(xpath):
     """Checks whether a certain element using XPath exists on the page or note."""
+    from __main__ import DRIVER
+
     try:
-        webdriver.find_element(By.XPATH, xpath)
+        time.sleep(0.5)
+        DRIVER.find_element(By.XPATH, xpath)
     except NoSuchElementException:
         return False
     return True
 
-def create_driver(dir):
+def create_driver(dir: str):
     """
     Creates a headless Chrome driver that grabs or fetches files/images in the background
     
     Args:
-        dir (str): Directory to use as output
+        dir (str): Directory to use as download location
     """
-    from .main import CONFIG
+    from __main__ import CONFIG
 
-    log_level = CONFIG.read_general(c.KEY_LOG_LEVEL)
+    log_level = CONFIG.read_general(const.KEY_LOG_LEVEL)
 
     options = Options()
     if  log_level != 'DEBUG':
@@ -43,7 +49,7 @@ def create_driver(dir):
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_experimental_option('prefs', {
         'profile.default_content_settings.popups': 0,
-        'download.default_directory': r'%s' %dir.name,
+        'download.default_directory': r'%s' %dir,
         'download.prompt_for_download': False,
         'download.directory_upgrade': True
         })

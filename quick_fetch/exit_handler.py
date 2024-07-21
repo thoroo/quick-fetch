@@ -1,12 +1,11 @@
-
-
 from quick_fetch import logger
 from os import _exit
 
-def clean_exit():    
-    from .main import DRIVER, PATH_TEMP
+def clean_exit():
+    from __main__ import DRIVER, TEMP_DIR
 
     DRIVER.quit()
-    PATH_TEMP.cleanup()
+    TEMP_DIR.cleanup()
     logger.info('QuickFetch has cleaned up after itself')
     _exit(0)
+    

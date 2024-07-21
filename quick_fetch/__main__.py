@@ -1,17 +1,19 @@
 import logging
-import os
 from colorama import Fore
-import quick_fetch
-from quick_fetch.hotkeys import register_hotkeys
-from quick_fetch.main import run
+from colorama import init
+import inquirer
+from quick_fetch import constants as const
 from quick_fetch import logger
-from quick_fetch.configuration import load_config
+import quick_fetch
 from quick_fetch.driver import create_driver
 from quick_fetch.exit_handler import clean_exit
+from quick_fetch.hotkeys import register_hotkeys
+from quick_fetch.instructions import load_instructions
+from quick_fetch import config
 from tempfile import TemporaryDirectory
-from quick_fetch import constants as const
-from colorama import init
-import chime
+
+from quick_fetch.main import run
+from quick_fetch.sound import setup_sound
 
 if __name__ == '__main__':
     """Entry point of the application. All setup is done here first."""
@@ -20,19 +22,14 @@ if __name__ == '__main__':
 
     global CONFIG
     global TEMP_DIR
+    global OUTPUT_DIR
     global DRIVER
     global USE_SOUND
+    global INSTRUCTIONS
 
-    CONFIG = load_config()
+    CONFIG = config.QuickFetchConfig()
     TEMP_DIR = TemporaryDirectory()
-    DRIVER = create_driver(TEMP_DIR)
-
-    # update output path if using OS path variables, specifically %USERPROFILE%
-    output_dir = CONFIG.read_path(const.KEY_OUTPUT_DIR)
-    output_dir = output_dir.replace("%USERPROFILE%", os.environ.get("USERPROFILE", ""))
-    CONFIG.set(section=const.SECTION_PATH, option=const.KEY_OUTPUT_DIR, value=output_dir)    
-
-    const.RESOURCES_DIR.mkdir(parents=True, exist_ok=True)
+    DRIVER = create_driver(TEMP_DIR.name)
 
     # helps rich logger to properly output colors
     init(convert=True)
@@ -41,27 +38,26 @@ if __name__ == '__main__':
     logging.getLogger("rich").setLevel(log_level)
     logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(log_level)
 
-    sound_theme = CONFIG.read_general(const.KEY_SOUND).lower()
+    USE_SOUND = setup_sound()
 
-    if sound_theme != 'none':
-        try:
-            chime.theme(sound_theme)
-        except Exception:
-            logger.warning(f'{const.KEY_SOUND} is not a valid theme. Defaulting to "big-sur".')
-            chime.theme('big-sur')
-            chime.warning()
-        
-        USE_SOUND = True
-    else:
-        USE_SOUND = False
-        logger.info('Sound has been disabled in config.')
+    instructions = load_instructions()
 
-    mode = CONFIG.read_general(const.KEY_MODE).lower()
+    question = [
+        inquirer.List(name='section',
+                       message='Which instruction should be used?',
+                       choices=list(instructions.keys()))
+    ]
+
+    chosen_section = next(iter(inquirer.prompt(question).values()))
+
+    INSTRUCTIONS = instructions.get(chosen_section)
+
+    # TODO update output path if using OS path variables, specifically %USERPROFILE%
+    OUTPUT_DIR = INSTRUCTIONS.get('output')
+    logger.info(f'Output path set to: {OUTPUT_DIR}')
+
     hotkeys = CONFIG.get_section(const.SECTION_HOTKEY)
-    register_hotkeys(hotkeys, mode)    
-
-    logger.info(f"Output path set to: {Fore.GREEN}{output_dir}{Fore.WHITE}")
-    logger.info(f"Using mode: {Fore.GREEN}{mode.title()}{Fore.WHITE}")
+    register_hotkeys(hotkeys)
 
     try:
         run()

@@ -163,6 +163,5 @@ cython_debug/
 
 # Visual Studio Code
 .vscode/
-/config_files
-/configs
 /resources
+/settings
