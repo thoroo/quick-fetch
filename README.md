@@ -20,7 +20,7 @@ The script is a semi-automated tool that requires user input and is intended to 
 ## Installation
 
 ```bash
-git clone https://github.com/phiido/quick-fetch
+git clone https://github.com/thoroo/quick-fetch
 cd quick-fetch
 ```
 
