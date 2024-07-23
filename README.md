@@ -57,6 +57,7 @@ You can configure custom hotkeys for the following actions:
 - **Previous Page**: Key to move to the previous page.
 
 ### Instructions
+New from 0.3.0, now you write down instructions in a codebook (json5 format) in which it takes stepwise actions depending on if you are fetching a file directly (current page) or indirectly (jump over to a page).
 
 The keys of the instructions are as follows:
 - `output - Path`: Sets the output directory for the file
@@ -71,10 +72,6 @@ The keys of the instructions are as follows:
     - `method - image or file`: Sets the type of download (image, file)
     - `xpath - XPath`: Sets the XPath element to download
     - `attr - string`: Sets the attribute to download (e.g. `src` for an image)
-    - `rename_file`:
-        - `format`: Set the format of the file
-        - `add_prefix`: Adds a prefix to the file name
-        - `add_suffix`: Adds a suffix to the file name
 
 A example instruction can be found below. For example, the hotkey for indirect download (F9) will run the actions defined in the 'indirect' key. It does so by first grabbing the link URL from the mouse pointer, then opens a headless window to open that URL, clicks on a XPath element, downloads a image file by getting the URL attribute (in this case 'src') to download from.
 
