@@ -127,7 +127,8 @@ def download(type):
     
     if type == 'image':
         url = pyperclip.paste()
-        download_image(url)
+        if not download_image(url):
+            return
 
     elif isinstance(type, dict):
         logger.debug('Download has sub instructions..')
