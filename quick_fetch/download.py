@@ -93,9 +93,13 @@ def download_file(xpath):
 
     logger.debug('Attempting to download the file...')
 
-    # attempt to get filename from URL and check if it exists
-    url = WebDriverWait(DRIVER, timeout=10, poll_frequency=2).until(EC.element_to_be_clickable((By.XPATH, xpath))).get_attribute('href')
-
+    try:
+        # attempt to get filename from URL and check if it exists
+        url = WebDriverWait(DRIVER, timeout=10, poll_frequency=2).until(EC.element_to_be_clickable((By.XPATH, xpath))).get_attribute('href')
+    except Exception as e:
+        logger.error(f'Error getting URL attribute: {e}')
+        return False
+    
     # requires a bit more work if a file is renamed using a query
     parsed_url = urlparse(url)
     query_dict = parse_qs(parsed_url.query)

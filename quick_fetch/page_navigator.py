@@ -48,9 +48,12 @@ def click_navigator(image):
     
 def click_on_page(xpath):
     from __main__ import DRIVER
-    logger.debug(f'Clicking on the following element: {Fore.BLUE}{xpath}{Fore.WHITE}')
-    WebDriverWait(DRIVER, timeout=10, poll_frequency=2).until(EC.element_to_be_clickable((By.XPATH, xpath))).click()
-
+    try:
+        logger.debug(f'Clicking on the following element: {Fore.BLUE}{xpath}{Fore.WHITE}')
+        WebDriverWait(DRIVER, timeout=10, poll_frequency=2).until(EC.element_to_be_clickable((By.XPATH, xpath))).click()
+    except Exception as e:
+        logger.error(f'An error occurred while clicking on the element: {e}')
+        
 def get_next_page():
     """Presses the button for the next page/URL"""
     from __main__ import CONFIG
