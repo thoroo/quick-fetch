@@ -2,7 +2,7 @@ from quick_fetch import logger
 from quick_fetch.download import download
 from quick_fetch.driver import element_exist
 from quick_fetch.page_navigator import click_on_page
-from quick_fetch.util_url import get_url_from_window, get_url_from_mouse, move_to_url
+from quick_fetch.url_handler import get_url_from_window, get_url_from_mouse, move_to_url
 
 def go_fetch(mode):
     from __main__ import INSTRUCTIONS
