@@ -12,7 +12,7 @@ logging.basicConfig(
 
 logger = logging.getLogger('rich')
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 if __name__ == '__main__':
     if platform.system() != 'Windows':
