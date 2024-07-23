@@ -16,7 +16,10 @@ KEY_DOWNLOAD_INDIRECT = 'IndirectDownload'
 KEY_NEXT_PAGE = 'NextPage'
 KEY_PREVIOUS_PAGE = 'PreviousPage'
 
-MODES = [
+PARAMETERS = [
+    'output',
+    'page_next',
+    'page_prev',
     'direct',
     'indirect'
 ]
@@ -27,6 +30,7 @@ ACTIONS = [
     'url_from_mouse',
     'url_from_window',
     'move_to_url',
+    'get_metadata',
     'download'
 ]
 
@@ -34,6 +38,13 @@ FORMATS = [
     'format',
     'add-prefix',
     'add-suffix'
+]
+
+DOWNLOAD_PARAM = [
+    'method',
+    'xpath',
+    'attr',
+    'rename_file'
 ]
 
 KEYBOARD_KEYS = [
