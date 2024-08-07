@@ -3,7 +3,16 @@ QuickFetch is a Python script designed to automate the process of downloading a 
 
 The script is a semi-automated tool that requires user input and is intended to reduce the time spent on downloading individual items in a page that use a grid or lazy loading. It uses `PyScreeze` to locate and interact with images on the screen for quick navigation.
 
-### Key features
+## Common scenarios
+### Enjoying Your Favorite Website
+You have your go-to website for discovering art, and you love scrolling through endless pages to find new images that catch your eye. But let's face it, opening up a new tab for each image can quickly get out of hand. With `Quick-fetch`, you can automate the process by simply pressing a hotkey, and the image will be saved directly to your specified folder. If you want to take a closer look, you can open a new tab, but you can still quickly save the image with a single click.
+
+### Finding Your Favorite Files
+You have a website where you find all sorts of files, like ebooks or assets. You enjoy scrolling through page after page, and when you find something you like, you open it in a new tab to explore. But then you have to go through the trouble of downloading it, naming it, and moving it to your desired location. With `Quick-fetch`, you can simplify this process. It loads your instructions, you click a hotkey, and it automatically downloads the file, names it according to your specifications, and saves it to your chosen folder; it can even unzip it for you.
+
+In both cases, `Quick-fetch` helps streamline the process, reducing the number of interactions you have to make, making it easier and more efficient to find and save the things you want.
+
+## Key features
 
 - **Multi-page support**: Quickly navigate between pages using keyboard shortcuts.
 - **Flexible download options**: Choose from direct or indirect downloads for images and files.
@@ -13,7 +22,7 @@ The script is a semi-automated tool that requires user input and is intended to 
 - **Interactive console**: Enjoy a clean and colorful console experience with rich logging.
 - **Sound notifications**: Receive audio cues for successful or failed downloads.
 
-### Current issues
+## Current issues
 
 - Checking for downloaded files has a timeout for 120 seconds. If download speed is low or if the file is large enough, it will cut off the download and close the application
 
@@ -40,7 +49,7 @@ If you want to use page navigator buttons, create a copy of the button image(s) 
 
 Finding XPaths for an element can be done by going into DevTools (pressing F12 for Chrome), right clicking on the target element and copy the XPath string. A good tutorial can be found at [W3schools](https://www.w3schools.com/xml/xpath_intro.asp) for more advanced search methods. Double check that the XPath is correct by doing a search (CTRL + F) inside the elements tab of DevTools. You should only get a single hit, if it is 0 or >1, rewrite it.
 
-**Note:** There is some validation of button clicks and copied URLs when using `Mouse mode`, however, Chrome has implemented quick access to *Reading Mode* that will be opened instead when pressing the hotkey for `Direct download` when hovering over a non-link element. A workaround is to disable *Reading Mode* from Chrome flags (<chrome://flags/>).
+**Note:** There is some validation of button clicks and copied URLs from the mouse pointer, however, Chrome has implemented quick access to *Reading Mode* that will be opened instead when pressing the hotkey for `Direct download` when hovering over a non-link element. A workaround is to disable *Reading Mode* from Chrome flags (<chrome://flags/>).
 
 ## Config settings
 
