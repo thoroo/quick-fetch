@@ -1,8 +1,8 @@
 @echo off
 setlocal
 
-set "CURRENT_DIR=%cd%"
-set "VENV_DIR=%CURRENT_DIR%\venv"
+set "CURRENT_DIR=%~dp0"
+set "VENV_DIR=%CURRENT_DIR%\.venv"
 set "REQUIREMENTS_FILE=%CURRENT_DIR%\requirements.txt"
 
 rem Check if the virtual environment directory exists
