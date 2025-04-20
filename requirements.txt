@@ -2,7 +2,6 @@ ansicon==1.89.0
 attrs==23.2.0
 blessed==1.20.0
 certifi==2024.7.4
-cffi==1.16.0
 charset-normalizer==3.3.2
 chime==0.7.0
 colorama==0.4.6
@@ -27,7 +26,7 @@ PyRect==0.2.0
 PyScreeze==0.1.30
 PySocks==1.7.1
 pytweening==1.2.0
-pywin32==306
+pywin32==310
 pywinauto==0.6.8
 readchar==4.1.0
 requests==2.32.3
