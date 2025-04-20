@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     # TODO update output path if using OS path variables, specifically %USERPROFILE%
     OUTPUT_DIR = INSTRUCTIONS.get('output')
-    logger.info(f'Output path set to: {OUTPUT_DIR}')
+    logger.info(f'Output path set to: "{OUTPUT_DIR}"')
 
     hotkeys = CONFIG.get_section(const.SECTION_HOTKEY)
     register_hotkeys(hotkeys)
