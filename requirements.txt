@@ -5,12 +5,13 @@ certifi==2024.7.4
 charset-normalizer==3.3.2
 chime==0.7.0
 colorama==0.4.6
-comtypes==1.4.5
+comtypes==1.4.10
 editor==1.6.6
 h11==0.14.0
 idna==3.7
 inquirer==3.3.0
 jinxed==1.2.1
+json5==0.12.0
 keyboard==0.13.5
 markdown-it-py==3.0.0
 mdurl==0.1.2
