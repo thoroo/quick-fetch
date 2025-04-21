@@ -2,6 +2,7 @@ import logging
 from colorama import Fore
 from colorama import init
 import inquirer
+import os
 from quick_fetch import constants as const
 from quick_fetch import logger
 import quick_fetch
@@ -52,8 +53,11 @@ if __name__ == '__main__':
 
     INSTRUCTIONS = instructions.get(chosen_section)
 
-    # TODO update output path if using OS path variables, specifically %USERPROFILE%
     OUTPUT_DIR = INSTRUCTIONS.get('output')
+
+    if '%USERPROFILE%' in OUTPUT_DIR:
+        OUTPUT_DIR = OUTPUT_DIR.replace('%USERPROFILE%', os.environ['USERPROFILE'])
+
     logger.info(f'Output path set to: "{OUTPUT_DIR}"')
 
     hotkeys = CONFIG.get_section(const.SECTION_HOTKEY)
