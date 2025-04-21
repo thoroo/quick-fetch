@@ -11,6 +11,7 @@ import requests
 from colorama import Fore
 
 from quick_fetch import logger
+from quick_fetch import constants as const
 from quick_fetch.file import file_exists, unzip_downloaded
 from quick_fetch.page_navigator import click_on_page
 from quick_fetch.exit_handler import clean_exit
@@ -21,20 +22,21 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from quick_fetch.xpath import is_xpath
 
-def download_wait(dir, timeout=120, nfiles=None):
+def download_wait(dir, nfiles=None):
     """
     Wait for downloads to finish with a specified timeout.
 
     Args:
         dir (str):
             The path to the folder where the files will be downloaded.
-        timeout (int):
-            How many seconds to wait until timing out.
         nfiles (int): defaults to None
             If provided, also wait for the expected number of files.
 
     """
     from __main__ import USE_SOUND
+    from __main__ import CONFIG
+
+    timeout = CONFIG.read_general(const.KEY_DOWNLOAD_TIMEOUT)
 
     seconds = 0
     waiting = True

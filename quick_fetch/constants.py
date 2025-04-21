@@ -5,9 +5,9 @@ CONFIG_FILE = SETTINGS_DIR / 'config.ini'
 INSTRUCTIONS_FILE = SETTINGS_DIR / 'instructions.json5'
 
 SECTION_GENERAL = 'General'
-KEY_MODE = 'Mode'
 KEY_SOUND = 'ThemeSound'
 KEY_LOG_LEVEL = 'LogLevel'
+KEY_DOWNLOAD_TIMEOUT = 'Timeout'
 
 SECTION_HOTKEY = 'Hotkeys'
 KEY_EXIT = 'Exit'
@@ -31,7 +31,8 @@ ACTIONS = [
     'url_from_window',
     'move_to_url',
     'get_metadata',
-    'download'
+    'download',
+    'macro'
 ]
 
 FORMATS = [    
