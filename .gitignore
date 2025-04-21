@@ -164,4 +164,5 @@ cython_debug/
 # Visual Studio Code
 .vscode/
 /resources
-/settings
+settings/config.ini
+settings/instructions.json5
