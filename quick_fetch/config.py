@@ -1,14 +1,25 @@
 from configparser import ConfigParser
 from ast import literal_eval
+from shutil import copy
 
 from quick_fetch import logger
 from quick_fetch import constants as const
+from quick_fetch.exit_handler import clean_exit
 
 class QuickFetchConfig(ConfigParser):
     """Provides global access to loaded configuration options as a ConfigParser subclass."""
 
     def __init__(self) -> None:
         super(ConfigParser, self).__init__()
+
+        if not const.CONFIG_FILE.exists():
+            example_file = const.CONFIG_FILE.with_suffix('.example')
+
+            if example_file.exists():
+                copy(example_file, const.CONFIG_FILE)
+            else:
+                logger.error("Example config file does not exist. May need to do a update / git pull")
+                clean_exit()
 
         self.optionxform = str # enables case-sensitive keys
         self._read_config()
