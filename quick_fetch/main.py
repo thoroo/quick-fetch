@@ -1,6 +1,7 @@
 import time
 import keyboard
 from quick_fetch import logger
+from quick_fetch.exit_handler import clean_exit
 
 def run():
     """Main function to run the application"""
@@ -12,4 +13,4 @@ def run():
 
     except KeyboardInterrupt:
         logger.info("Quitting due to keyboard interrupt..")
-        return
+        clean_exit()
