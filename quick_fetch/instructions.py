@@ -1,18 +1,28 @@
 
 import string
-import sys
+from shutil import copy
 from quick_fetch import constants as const
+from quick_fetch.exit_handler import clean_exit
 import json5
 from quick_fetch import logger
 
 def load_instructions():
+    if not const.INSTRUCTIONS_FILE.exists():
+        example_file = const.INSTRUCTIONS_FILE.with_suffix('.example')
+
+        if example_file.exists():
+            copy(example_file, const.INSTRUCTIONS_FILE)
+        else:
+            logger.error("Example instructions file does not exist. May need to do a update / git pull")
+            clean_exit()
+
     with open(const.INSTRUCTIONS_FILE, 'r') as file:
         data = json5.load(file)
     try:
         validate_instructions(data)
     except ValueError as e:
         logger.error(f"An error occurred during instruction validation: {str(e)}")
-        sys.exit(1)
+        clean_exit()
     
     return data
 
